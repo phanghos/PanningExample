@@ -8,29 +8,34 @@ import {
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { CIRCLE_SIZE, GREEN, SCALE_FINAL, SCALE_INITIAL } from './constants';
 
-const RNGH2WithoutSnapping = () => {
+const CIRCLE_SIZE = 100;
+const GREEN = '#1DB954';
+const SCALE_INITIAL = 1;
+const SCALE_FINAL = 1.2;
+
+const App = () => {
   const posX = useSharedValue(0);
   const posY = useSharedValue(0);
+  const offsetX = useSharedValue(0);
+  const offsetY = useSharedValue(0);
   const isPressed = useSharedValue(false);
   const scale = useSharedValue(SCALE_INITIAL);
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
+      offsetX.value = posX.value;
+      offsetY.value = posY.value;
       isPressed.value = true;
       scale.value = SCALE_FINAL;
     })
     .onUpdate(({ translationX, translationY }) => {
-      posX.value = translationX;
-      posY.value = translationY;
+      posX.value = translationX + offsetX.value;
+      posY.value = translationY + offsetY.value;
     })
     .onFinalize(() => {
-      posX.value = withSpring(0);
-      posY.value = withSpring(0);
       isPressed.value = false;
       scale.value = SCALE_INITIAL;
     });
@@ -55,7 +60,7 @@ const RNGH2WithoutSnapping = () => {
   );
 };
 
-export default RNGH2WithoutSnapping;
+export default App;
 
 const styles = StyleSheet.create({
   mainContainer: { flex: 1 },
