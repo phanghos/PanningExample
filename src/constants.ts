@@ -1,0 +1,6 @@
+const CIRCLE_SIZE = 100;
+const GREEN = '#1DB954';
+const SCALE_INITIAL = 1;
+const SCALE_FINAL = 1.2;
+
+export { CIRCLE_SIZE, GREEN, SCALE_INITIAL, SCALE_FINAL };
